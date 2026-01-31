@@ -33,6 +33,7 @@
 ".\objects\lightsensor.o"
 ".\objects\key.o"
 ".\objects\tempearturesensor.o"
+".\objects\menu.o"
 ".\objects\main.o"
 ".\objects\stm32f10x_it.o"
 --strict --scatter ".\Objects\Project.sct"
