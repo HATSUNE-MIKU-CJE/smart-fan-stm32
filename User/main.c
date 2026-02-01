@@ -6,42 +6,35 @@
 #include "TemperatureSensor.h"
 #include "Key.h"
 #include "Menu.h"
+#include "AD.h"
 
 int main()
 {
     uint8_t keyNum=0;
     LED_Init();
     OLED_Init();
-    LightSensor_Init();
+    AD_Init();
     TemperatureSensor_Init();
     Menu_Init();
     Key_Init();
     while (1)
     {
         keyNum=Key_GetNum();
-        if (keyNum==1)
+        if (keyNum==2)
         {
             Menu_Down();
             Delay_ms(50);
         }
-        if (keyNum==2)
+        if (keyNum==1)
         {
             Menu_Up();
             Delay_ms(50);
         }
-        if (LightSensor_Get()==1)
+        if (keyNum==3)
         {
-            LED_on();
-        }
-        else
-        {
-            LED_off();
-        }
-        if (TemperatureSensor_Get()==1)
-        {
-        }
-        else
-        {
+
+            Menu_Select();
+            Delay_ms(50);
         }
         Delay_ms(10);
     }

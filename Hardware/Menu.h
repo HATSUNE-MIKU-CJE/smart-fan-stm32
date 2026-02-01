@@ -10,6 +10,6 @@ void Menu_Draw(void);
 void Menu_Up(void);
 void Menu_Down(void);
 void Menu_DrawPartial(void);
-void Menu_ScrollTo(uint8_t targetIndex);
+void Menu_Select(void);
 
 #endif

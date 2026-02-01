@@ -5,7 +5,9 @@
 #include "Delay.h"
 #include "stdio.h"
 #include "stdlib.h"
-
+#include "LightSensor.h"
+#include "AD.h"
+#include "Key.h"
 
 
 //const修饰的字符串会被编译器放在Flash区域里
@@ -21,27 +23,30 @@ struct Menu{
 static Menu* currentMenu=NULL; //当前显示的菜单
 static uint8_t selectedIndex=0; //当前选中的索引
 static uint8_t scrollOffset=0; //滚动偏移量
+static uint8_t displayLine; //OLED显示行号
+static uint8_t itemIndex; //实际菜单项索引
+static uint8_t maxVisibleItems=3; //一屏最多显示三个菜单项
 
 //这里使用了双指针，mainMenuItems指向了
 static const char* mainMenuItems[]={
     "Status",
-    "Wind speed", 
-    "Brightness",
+    "Manual Control", 
+    "Auto Mode",
     "Settings",
     "About"
 };
 
 static void ShowStatus(void);
+static void ShowManualControl(void);
+static void ShowAutoMode(void);
 static void ShowSettings(void);
-static void ShowBrightness(void);
-static void ShowSystem(void);
 static void ShowAbout(void);
 
 static MenuAction mainMenuActions[] = {
     ShowStatus,
+    ShowManualControl,
+    ShowAutoMode,
     ShowSettings,
-    ShowBrightness,
-    ShowSystem,
     ShowAbout
 };
 
@@ -54,23 +59,72 @@ static Menu mainMenu = {
 };
 
 static void ShowStatus(void) {
+    uint8_t keyNum=0;
+    uint32_t updateCounter = 0;
+    OLED_Clear();
+    OLED_ShowString(1,1,"System Status");
+    
+    while (1)
+    {
+        updateCounter++;
+        if (updateCounter%10==0)
+        {
+            uint8_t lightLevel=LightSensor_GetLevel();
+            uint16_t adValue=AD_GetValue();
+            const char* lightDesc=LightSensor_GetLightDescription();
+            float voltage = (float)adValue / 4095 * 3.3;
 
+            OLED_ShowString(2,1,"Light:");
+            OLED_ShowNum(2,7,lightLevel,1);
+            OLED_ShowString(2,8,"/5");
+
+            for (uint8_t j=0;j<6 && lightDesc[j]!='\0';j++)
+            {
+                OLED_ShowChar(2,11+j,lightDesc[j]);
+            }
+
+            OLED_ShowString(3,1,"AD:");
+            OLED_ShowNum(3,5,adValue,4);
+            OLED_ShowString(3,10,"V:");
+            OLED_ShowNum(3,13,(uint16_t)(voltage*100)/100,1);
+            OLED_ShowString(3,14,".");
+            OLED_ShowNum(3,15,(uint16_t)(voltage*100)%100,2);
+
+            OLED_ShowString(4,1,"T:--C H:--%");
+        }
+        keyNum=Key_GetNum();
+        if (keyNum==3)
+        {
+            break;
+        }
+        Delay_ms(10);
+    }
+    Menu_Draw();
+
+}
+
+static void ShowManualControl(void) {
+    OLED_Clear();
+    Delay_s(2);
+    Menu_Draw();
+}
+
+static void ShowAutoMode(void) {
+    OLED_Clear();
+    Delay_s(2);
+    Menu_Draw();
 }
 
 static void ShowSettings(void) {
-
-}
-
-static void ShowBrightness(void) {
-
-}
-
-static void ShowSystem(void) {
-
+    OLED_Clear();
+    Delay_s(2);
+    Menu_Draw();
 }
 
 static void ShowAbout(void) {
-
+    OLED_Clear();
+    Delay_s(2);
+    Menu_Draw();
 }
 
 void Menu_Init(void)
@@ -98,9 +152,6 @@ void Menu_Draw(void)
     绘制滚动提示
     */
    uint8_t i;
-   uint8_t displayLine; //OLED显示行号
-   uint8_t itemIndex; //实际菜单项索引
-   uint8_t maxVisibleItems=3; //一屏最多显示三个菜单项
 
    if (currentMenu==NULL)
    {
@@ -201,4 +252,26 @@ void Menu_DrawPartial(void)
     }
 }
 
-
+void Menu_Select(void)
+{
+    switch (selectedIndex)
+    {
+    case 0: 
+        ShowStatus();
+        break;
+    case 1:
+        ShowManualControl();
+        break;
+    case 2:
+        ShowAutoMode();
+        break;
+    case 3: 
+        ShowSettings();
+        break;
+    case 4: 
+        ShowAbout();
+        break;
+    default: 
+        break;
+    }
+}
