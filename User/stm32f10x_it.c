@@ -131,9 +131,12 @@ void PendSV_Handler(void)
   * @brief  This function handles SysTick Handler.
   * @param  None
   * @retval None
-  */
+ */ 
+extern uint32_t systick_counter;  // 声明外部变量
+
 void SysTick_Handler(void)
 {
+    systick_counter++;  // 调用我们的计数器
 }
 
 /******************************************************************************/

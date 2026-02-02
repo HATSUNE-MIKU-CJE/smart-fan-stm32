@@ -26,6 +26,7 @@ uint8_t LightSensor_GetLevel(void)
     {return 4;}
     else {return 5;}
 }
+
 const char* LightSensor_GetLightDescription(void)
 {
     uint8_t level=LightSensor_GetLevel();
@@ -39,3 +40,4 @@ const char* LightSensor_GetLightDescription(void)
     default: return "Unknown";
     }
 }
+
