@@ -2,6 +2,7 @@
 #define __TEMPERATURESENSOR_H
 
 void TemperatureSensor_Init(void);
-uint8_t TemperatureSensor_Get(void);
+uint8_t TEMSensor_GetLevel(void);
+
 
 #endif

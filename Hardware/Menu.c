@@ -8,6 +8,8 @@
 #include "LightSensor.h"
 #include "AD.h"
 #include "Key.h"
+#include "TemperatureSensor.h"
+#include "Motor.h"
 
 MenuState_t g_menu_state = MENU_STATE_MAIN;
 
@@ -62,6 +64,9 @@ static Menu mainMenu = {
 
 // 在Menu.c中添加一个全局变量记录状态页面是否需要重绘
 static uint8_t status_need_redraw = 1;
+static uint8_t auto_need_redraw=1;
+static uint8_t manual_need_redraw=1;
+
 
 // 统一的ShowStatus函数（非阻塞）
 static void ShowStatus(void) {
@@ -81,7 +86,7 @@ static void ShowStatus(void) {
         OLED_ShowString(2, 8, "/5");
         OLED_ShowString(3, 1, "AD:");
         OLED_ShowString(3, 10, "V:");
-        OLED_ShowString(4, 1, "T:--C H:--%");
+        OLED_ShowString(4, 1, "ADT:");
         
         status_need_redraw = 0;
         first_update = 1;  // 标记需要立即更新
@@ -91,7 +96,8 @@ static void ShowStatus(void) {
     if (first_update||GetTick() - last_update > 500) {
         // 获取传感器数据
         uint8_t lightLevel = LightSensor_GetLevel();
-        uint16_t adValue = AD_GetValue();
+        uint16_t adValue = AD_GetValue(ADC_Channel_0);
+        uint16_t adValue_T=AD_GetValue(ADC_Channel_7);
         const char* lightDesc = LightSensor_GetLightDescription();
         float voltage = (float)adValue / 4095 * 3.3;
         
@@ -109,6 +115,7 @@ static void ShowStatus(void) {
         OLED_ShowNum(3, 13, (uint16_t)(voltage*100)/100, 1);
         OLED_ShowString(3, 14, ".");
         OLED_ShowNum(3, 15, (uint16_t)(voltage*100)%100, 2);
+        OLED_ShowNum(4,5,adValue_T,4);
         
         last_update = GetTick();
         first_update = 0;  // 重置第一次更新标志
@@ -117,31 +124,89 @@ static void ShowStatus(void) {
 
 
 static void ShowManualControl(void) {
-    OLED_Clear();
-    Delay_s(2);
-    Menu_Draw();
+    g_menu_state = MENU_STATE_MANUAL;  // 设置状态
+    static uint32_t last_update = 0;
+    static uint8_t first_update = 1;
+    if (manual_need_redraw)
+    {
+        OLED_Clear();
+        OLED_ShowString(1, 1, "Manual Control");
+        OLED_ShowString(3, 1, "Wind Speed:");
+        OLED_ShowString(3,12,"0/5");
+        manual_need_redraw = 0;
+        first_update = 1;  // 标记需要立即更新
+    }
+
+    if (first_update||GetTick() - last_update > 500)
+    {
+        uint16_t wind_speed=Motor_GetSpeed();
+        OLED_ShowNum(3,12,wind_speed/20,1);
+        last_update = GetTick();
+        first_update = 0;  // 重置第一次更新标志
+    }
 }
 
 static void ShowAutoMode(void) {
-    OLED_Clear();
-    Delay_s(2);
-    Menu_Draw();
+    g_menu_state = MENU_STATE_AUTO;
+    static uint32_t last_update = 0;
+    static uint8_t first_update = 1;
+    
+    if (auto_need_redraw) {
+        OLED_Clear();
+        OLED_ShowString(1, 1, "Auto Mode");
+        
+        // 绘制静态标签
+        OLED_ShowString(2, 1, "Tem:");
+        OLED_ShowString(2, 5, "0/6");
+        OLED_ShowString(2, 9, "Wind:");
+        OLED_ShowString(2, 14, "0/5");
+        OLED_ShowString(3, 1, "AD:");
+        OLED_ShowString(3, 10, "V:");
+        OLED_ShowString(4, 1, "Status:    ");
+        
+        auto_need_redraw = 0;
+        first_update = 1;  // 标记需要立即更新
+    }
+    
+    // 每500ms更新一次动态数据
+    if (first_update||GetTick() - last_update > 500) {
+        // 获取传感器数据
+        uint8_t temLevel = TEMSensor_GetLevel();
+        uint16_t speedLevel= Motor_GetSpeed();
+        uint16_t adValue = AD_GetValue(ADC_Channel_7);
+        float voltage = (float)adValue / 4095 * 3.3;
+        
+        OLED_ShowNum(2, 5, temLevel, 1);
+        OLED_ShowNum(2, 14, speedLevel/20, 1);
+        
+        // 更新AD值和电压
+        OLED_ShowNum(3, 5, adValue, 4);
+        OLED_ShowNum(3, 13, (uint16_t)(voltage*100)/100, 1);
+        OLED_ShowString(3, 14, ".");
+        OLED_ShowNum(3, 15, (uint16_t)(voltage*100)%100, 2);
+        
+        last_update = GetTick();
+        first_update = 0;  // 重置第一次更新标志
+    }
 }
 
 static void ShowSettings(void) {
+    g_menu_state = MENU_STATE_SETTINGS;
     OLED_Clear();
-    Delay_s(2);
-    Menu_Draw();
+    OLED_ShowString(1, 1, "Settings");
+    OLED_ShowString(3, 1, "Coming Soon...");
 }
 
 static void ShowAbout(void) {
+    g_menu_state = MENU_STATE_ABOUT;
     OLED_Clear();
-    Delay_s(2);
-    Menu_Draw();
+    OLED_ShowString(1, 1, "About");
+    OLED_ShowString(3, 1, "Smart Fan v0.4");
+    OLED_ShowString(4, 1, "HATSUNE-MIKU-CJE");
 }
 
 void Menu_Init(void)
-{
+{    
     currentMenu=&mainMenu;
     
     selectedIndex=0;
@@ -286,9 +351,15 @@ void Menu_Select(void) {
 // 新增：菜单状态处理函数（在主循环中调用）
 void Menu_Process(void) {
     switch (g_menu_state)
-    {
+    { 
     case MENU_STATE_STATUS:
         ShowStatus();
+        break;
+    case MENU_STATE_AUTO:
+        ShowAutoMode();
+        break;
+    case MENU_STATE_MANUAL:
+        ShowManualControl();
         break;
     default:
         break;
@@ -303,5 +374,7 @@ void Menu_Process(void) {
 void Menu_ExitCurrent(void) {
     g_menu_state = MENU_STATE_MAIN;
     status_need_redraw = 1;  // 标记下次进入状态页面需要重绘
+    auto_need_redraw=1;
+    manual_need_redraw=1;
     Menu_Draw();
 }

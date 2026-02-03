@@ -410,10 +410,15 @@ typedef struct
 void DMA_DeInit(DMA_Channel_TypeDef* DMAy_Channelx);
 void DMA_Init(DMA_Channel_TypeDef* DMAy_Channelx, DMA_InitTypeDef* DMA_InitStruct);
 void DMA_StructInit(DMA_InitTypeDef* DMA_InitStruct);
+//使能
 void DMA_Cmd(DMA_Channel_TypeDef* DMAy_Channelx, FunctionalState NewState);
+//中断输出使能
 void DMA_ITConfig(DMA_Channel_TypeDef* DMAy_Channelx, uint32_t DMA_IT, FunctionalState NewState);
+//DMA设置当前数据寄存器
 void DMA_SetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx, uint16_t DataNumber); 
+//DMA获取当前数据寄存器（返回传输计数器的值）
 uint16_t DMA_GetCurrDataCounter(DMA_Channel_TypeDef* DMAy_Channelx);
+//获取标志位状态，清除标志位，获取中断状态，清除中断挂起位
 FlagStatus DMA_GetFlagStatus(uint32_t DMAy_FLAG);
 void DMA_ClearFlag(uint32_t DMAy_FLAG);
 ITStatus DMA_GetITStatus(uint32_t DMAy_IT);

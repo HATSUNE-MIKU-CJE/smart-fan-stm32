@@ -16,7 +16,7 @@ void LightSensor_Init(void)
 
 uint8_t LightSensor_GetLevel(void)
 {
-    ADValue=AD_GetValue();
+    ADValue=AD_GetValue(ADC_Channel_0);
     if (ADValue<=LIGHT_LEVEL_1_MAX) {return 1;}
     else if (ADValue>LIGHT_LEVEL_1_MAX && ADValue <=LIGHT_LEVEL_2_MAX ) 
     {return 2;}
@@ -32,12 +32,12 @@ const char* LightSensor_GetLightDescription(void)
     uint8_t level=LightSensor_GetLevel();
     switch (level)
     {
-    case 1: return "Glare ";
-    case 2: return "Bright";
-    case 3: return "Mild  ";
-    case 4: return "Dim   ";
-    case 5: return "black ";
-    default: return "Unknown";
+        case 1: return "Glare ";
+        case 2: return "Bright";
+        case 3: return "Mild  ";
+        case 4: return "Dim   ";
+        case 5: return "black ";
+        default: return "Unknown";
     }
 }
 

@@ -7,11 +7,11 @@ void AD_Init(void)
 
     GPIO_InitTypeDef GPIO_InitStructure;
     GPIO_InitStructure.GPIO_Mode=GPIO_Mode_AIN;
-    GPIO_InitStructure.GPIO_Pin=GPIO_Pin_0;
+    GPIO_InitStructure.GPIO_Pin=GPIO_Pin_0|GPIO_Pin_7;
     GPIO_InitStructure.GPIO_Speed=GPIO_Speed_50MHz;
     GPIO_Init(GPIOA,&GPIO_InitStructure);
 
-    ADC_RegularChannelConfig(ADC1,ADC_Channel_0,1,ADC_SampleTime_55Cycles5);
+    
 
     ADC_InitTypeDef ADC_InitStructure;
     ADC_InitStructure.ADC_ContinuousConvMode=DISABLE;
@@ -31,8 +31,9 @@ void AD_Init(void)
 
 }
 
-uint16_t AD_GetValue(void)
+uint16_t AD_GetValue(uint8_t ADC_Channel)
 {
+    ADC_RegularChannelConfig(ADC1,ADC_Channel,1,ADC_SampleTime_55Cycles5);
     ADC_SoftwareStartConvCmd(ADC1,ENABLE);
     while (ADC_GetFlagStatus(ADC1,ADC_FLAG_EOC)==RESET);
     return ADC_GetConversionValue(ADC1);
