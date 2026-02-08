@@ -201,8 +201,8 @@ static void ShowAbout(void) {
     g_menu_state = MENU_STATE_ABOUT;
     OLED_Clear();
     OLED_ShowString(1, 1, "About");
-    OLED_ShowString(3, 1, "Smart Fan v0.4");
-    OLED_ShowString(4, 1, "HATSUNE-MIKU-CJE");
+    OLED_ShowString(2, 1, "Smart Fan v0.6");
+    OLED_ShowString(3, 1, "HATSUNE-MIKU-CJE");
 }
 
 void Menu_Init(void)
@@ -214,7 +214,7 @@ void Menu_Init(void)
 
     OLED_Clear();
     OLED_ShowString(1,1,"smart-fan-stm32");
-    OLED_ShowString(2,2,"waiting...");
+    OLED_ShowString(2,1,"waiting......");
     Delay_s(3);
     Menu_Draw();
 }

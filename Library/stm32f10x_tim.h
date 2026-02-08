@@ -1052,35 +1052,24 @@ typedef struct
   */
 
 void TIM_DeInit(TIM_TypeDef* TIMx);
-//时基单元初始化
 void TIM_TimeBaseInit(TIM_TypeDef* TIMx, TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct);
-//配置输出比较模块
 void TIM_OC1Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
 void TIM_OC2Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
 void TIM_OC3Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
 void TIM_OC4Init(TIM_TypeDef* TIMx, TIM_OCInitTypeDef* TIM_OCInitStruct);
-
 void TIM_ICInit(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct);
 void TIM_PWMIConfig(TIM_TypeDef* TIMx, TIM_ICInitTypeDef* TIM_ICInitStruct);
 void TIM_BDTRConfig(TIM_TypeDef* TIMx, TIM_BDTRInitTypeDef *TIM_BDTRInitStruct);
 void TIM_TimeBaseStructInit(TIM_TimeBaseInitTypeDef* TIM_TimeBaseInitStruct);
-//给输出比较结构体配置默认值
 void TIM_OCStructInit(TIM_OCInitTypeDef* TIM_OCInitStruct);
-
 void TIM_ICStructInit(TIM_ICInitTypeDef* TIM_ICInitStruct);
 void TIM_BDTRStructInit(TIM_BDTRInitTypeDef* TIM_BDTRInitStruct);
-//使能计数器（运行控制）
 void TIM_Cmd(TIM_TypeDef* TIMx, FunctionalState NewState);
-
 void TIM_CtrlPWMOutputs(TIM_TypeDef* TIMx, FunctionalState NewState);
-//使能中断输出信号（中断输出控制）
 void TIM_ITConfig(TIM_TypeDef* TIMx, uint16_t TIM_IT, FunctionalState NewState);
-
 void TIM_GenerateEvent(TIM_TypeDef* TIMx, uint16_t TIM_EventSource);
 void TIM_DMAConfig(TIM_TypeDef* TIMx, uint16_t TIM_DMABase, uint16_t TIM_DMABurstLength);
 void TIM_DMACmd(TIM_TypeDef* TIMx, uint16_t TIM_DMASource, FunctionalState NewState);
-//时基单元的时钟选择部分：内部时钟，ITRx其他定时器的时钟，选择TIx捕获通道的时钟
-//选择ETR通过外部模式1输入的时钟，选择ETR通过外部模式2输入的时钟，单独配置ETR引脚
 void TIM_InternalClockConfig(TIM_TypeDef* TIMx);
 void TIM_ITRxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource);
 void TIM_TIxExternalClockConfig(TIM_TypeDef* TIMx, uint16_t TIM_TIxExternalCLKSource,
@@ -1091,40 +1080,31 @@ void TIM_ETRClockMode2Config(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler,
                              uint16_t TIM_ExtTRGPolarity, uint16_t ExtTRGFilter);
 void TIM_ETRConfig(TIM_TypeDef* TIMx, uint16_t TIM_ExtTRGPrescaler, uint16_t TIM_ExtTRGPolarity,
                    uint16_t ExtTRGFilter);
-//单独写预分频值（可以选模式）
 void TIM_PrescalerConfig(TIM_TypeDef* TIMx, uint16_t Prescaler, uint16_t TIM_PSCReloadMode);
-//改变计数器计数模式
 void TIM_CounterModeConfig(TIM_TypeDef* TIMx, uint16_t TIM_CounterMode);
 void TIM_SelectInputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_InputTriggerSource);
 void TIM_EncoderInterfaceConfig(TIM_TypeDef* TIMx, uint16_t TIM_EncoderMode,
                                 uint16_t TIM_IC1Polarity, uint16_t TIM_IC2Polarity);
-//配置强制输出模式，不常用
 void TIM_ForcedOC1Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction);
 void TIM_ForcedOC2Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction);
 void TIM_ForcedOC3Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction);
 void TIM_ForcedOC4Config(TIM_TypeDef* TIMx, uint16_t TIM_ForcedAction);
-//自动重装器预装功能配置
 void TIM_ARRPreloadConfig(TIM_TypeDef* TIMx, FunctionalState NewState);
-
 void TIM_SelectCOM(TIM_TypeDef* TIMx, FunctionalState NewState);
 void TIM_SelectCCDMA(TIM_TypeDef* TIMx, FunctionalState NewState);
 void TIM_CCPreloadControl(TIM_TypeDef* TIMx, FunctionalState NewState);
-//配置CCR寄存器预装功能，写入值不会立即生效，更新事件后生效（不常用）
 void TIM_OC1PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload);
 void TIM_OC2PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload);
 void TIM_OC3PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload);
 void TIM_OC4PreloadConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPreload);
-//配置快速使能，不常用
 void TIM_OC1FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast);
 void TIM_OC2FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast);
 void TIM_OC3FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast);
 void TIM_OC4FastConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCFast);
-
 void TIM_ClearOC1Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear);
 void TIM_ClearOC2Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear);
 void TIM_ClearOC3Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear);
 void TIM_ClearOC4Ref(TIM_TypeDef* TIMx, uint16_t TIM_OCClear);
-//用来单独设置输出比较极性，含有N，就是互补通道，OC4没有互补通道，就没有OC4N函数
 void TIM_OC1PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity);
 void TIM_OC1NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity);
 void TIM_OC2PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity);
@@ -1132,12 +1112,9 @@ void TIM_OC2NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity);
 void TIM_OC3PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity);
 void TIM_OC3NPolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCNPolarity);
 void TIM_OC4PolarityConfig(TIM_TypeDef* TIMx, uint16_t TIM_OCPolarity);
-
 void TIM_CCxCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCx);
 void TIM_CCxNCmd(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_CCxN);
-//选择输出比较模式
 void TIM_SelectOCxM(TIM_TypeDef* TIMx, uint16_t TIM_Channel, uint16_t TIM_OCMode);
-
 void TIM_UpdateDisableConfig(TIM_TypeDef* TIMx, FunctionalState NewState);
 void TIM_UpdateRequestConfig(TIM_TypeDef* TIMx, uint16_t TIM_UpdateSource);
 void TIM_SelectHallSensor(TIM_TypeDef* TIMx, FunctionalState NewState);
@@ -1145,16 +1122,12 @@ void TIM_SelectOnePulseMode(TIM_TypeDef* TIMx, uint16_t TIM_OPMode);
 void TIM_SelectOutputTrigger(TIM_TypeDef* TIMx, uint16_t TIM_TRGOSource);
 void TIM_SelectSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_SlaveMode);
 void TIM_SelectMasterSlaveMode(TIM_TypeDef* TIMx, uint16_t TIM_MasterSlaveMode);
-//给计数器写入一个值
 void TIM_SetCounter(TIM_TypeDef* TIMx, uint16_t Counter);
-//给自动重装器写入一个值
 void TIM_SetAutoreload(TIM_TypeDef* TIMx, uint16_t Autoreload);
-//单独更改CCR寄存器值，重要
 void TIM_SetCompare1(TIM_TypeDef* TIMx, uint16_t Compare1);
 void TIM_SetCompare2(TIM_TypeDef* TIMx, uint16_t Compare2);
 void TIM_SetCompare3(TIM_TypeDef* TIMx, uint16_t Compare3);
 void TIM_SetCompare4(TIM_TypeDef* TIMx, uint16_t Compare4);
-
 void TIM_SetIC1Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC);
 void TIM_SetIC2Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC);
 void TIM_SetIC3Prescaler(TIM_TypeDef* TIMx, uint16_t TIM_ICPSC);
@@ -1164,11 +1137,8 @@ uint16_t TIM_GetCapture1(TIM_TypeDef* TIMx);
 uint16_t TIM_GetCapture2(TIM_TypeDef* TIMx);
 uint16_t TIM_GetCapture3(TIM_TypeDef* TIMx);
 uint16_t TIM_GetCapture4(TIM_TypeDef* TIMx);
-//获取当前计数器的值
 uint16_t TIM_GetCounter(TIM_TypeDef* TIMx);
-//获取当前的预分频器的值
 uint16_t TIM_GetPrescaler(TIM_TypeDef* TIMx);
-
 FlagStatus TIM_GetFlagStatus(TIM_TypeDef* TIMx, uint16_t TIM_FLAG);
 void TIM_ClearFlag(TIM_TypeDef* TIMx, uint16_t TIM_FLAG);
 ITStatus TIM_GetITStatus(TIM_TypeDef* TIMx, uint16_t TIM_IT);
