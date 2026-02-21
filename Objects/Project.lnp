@@ -36,6 +36,8 @@
 ".\objects\menu.o"
 ".\objects\ad.o"
 ".\objects\rotary.o"
+".\objects\oled_data.o"
+".\objects\serial.o"
 ".\objects\main.o"
 ".\objects\stm32f10x_it.o"
 --strict --scatter ".\Objects\Project.sct"

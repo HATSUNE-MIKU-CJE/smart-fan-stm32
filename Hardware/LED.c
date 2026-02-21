@@ -50,11 +50,11 @@ void LED_Auto(void)
     switch (Mode)
     {
     case 1:
-        PWM_SetCompare3((uint16_t)0);
+        PWM_SetCompare3((uint16_t)100);
         Delay_ms(20);
         break;
     case 2:
-        PWM_SetCompare3((uint16_t)25);
+        PWM_SetCompare3((uint16_t)75);
         Delay_ms(50);
         break;
     case 3:
@@ -62,11 +62,11 @@ void LED_Auto(void)
         Delay_ms(20);
         break;
     case 4:
-        PWM_SetCompare3((uint16_t)75);
+        PWM_SetCompare3((uint16_t)25);
         Delay_ms(20);
         break;
     case 5:
-        PWM_SetCompare3((uint16_t)100);
+        PWM_SetCompare3((uint16_t)0);
         Delay_ms(20);
         break;
     default:

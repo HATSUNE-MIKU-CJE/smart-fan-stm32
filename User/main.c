@@ -23,7 +23,6 @@ int main()
     LED_PWM_Init();
     OLED_Init();
     AD_Init();
-    TemperatureSensor_Init();
     Menu_Init();
     Key_Init();
     Rotary_Init();
@@ -75,7 +74,8 @@ int main()
                     if (key_event == KEY_EVENT_CONFIRM) {
                         // 确认键：切换自动模式开关
                         auto_mode = !auto_mode;
-                        OLED_ShowString(4, 9, auto_mode ? "ON " : "OFF");
+                        OLED_ShowString(40, 48, auto_mode ? "开启" : "关闭",OLED_8X16);
+                        OLED_Update();
                         if (!auto_mode) {
                             speed = 0;
                             Motor_SetSpeed(speed);

@@ -2,9 +2,9 @@
 #include "Delay.h"
 #include "Rotary.h"
 
-#define ROTARY_CLK_PIN GPIO_Pin_9 //A
+#define ROTARY_CLK_PIN GPIO_Pin_3 //A
 #define ROTARY_CLK_PORT GPIOA
-#define ROTARY_DT_PIN GPIO_Pin_11 //B
+#define ROTARY_DT_PIN GPIO_Pin_1 //B
 #define ROTARY_DT_PORT GPIOA
 
 #define DEBOUNCE_TIME 10

@@ -32,12 +32,12 @@ const char* LightSensor_GetLightDescription(void)
     uint8_t level=LightSensor_GetLevel();
     switch (level)
     {
-        case 1: return "Glare ";
-        case 2: return "Bright";
-        case 3: return "Mild  ";
-        case 4: return "Dim   ";
-        case 5: return "black ";
-        default: return "Unknown";
+        case 1: return "强光";
+        case 2: return "明亮";
+        case 3: return "柔和";
+        case 4: return "微光";
+        case 5: return "昏暗";
+        default: return "未知";
     }
 }
 

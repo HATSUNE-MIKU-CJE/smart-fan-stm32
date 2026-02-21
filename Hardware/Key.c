@@ -2,10 +2,10 @@
 #include "Delay.h"
 #include "Key.h"
 
-#define CONFIRM_KEY_PIN GPIO_Pin_8
-#define BACK_KEY_PIN GPIO_Pin_10
-#define CONFIRM_KEY_PORT GPIOA
-#define BACK_KEY_PORT GPIOA
+#define CONFIRM_KEY_PIN GPIO_Pin_0
+#define BACK_KEY_PIN GPIO_Pin_1
+#define CONFIRM_KEY_PORT GPIOB
+#define BACK_KEY_PORT GPIOB
 
 #define KEY_DEBOUNCE_TIME 20
 
